@@ -199,3 +199,58 @@ void HashTable::print() {
     }
     cout << "-----------------------" << endl;
 };
+
+
+// Extra: Other Common Hashing Functions
+// You may use these hashing function in replacement of the default
+// hash function above
+
+// Hash function using Mod Method
+int mod_hash(int key, int table_size) {
+    // return the remainder of key divided by table size
+    return key % table_size;
+}
+
+// Hash function using Multiplication Method
+int multiply_hash(int key, int table_size) {
+    double A = 0.6180339887;
+    // choose a constant A between 0 and 1
+    // get the fractional part of the multiplication
+    double frac = (key * A) - floor(key * A);
+    // return the floor of the product of table size and fractional part
+    return floor(table_size * frac);
+}
+
+// Hash function using Mid Square Method
+int mid_square_hash(int key, int table_size) {
+    // square the key
+    int square = key * key;
+    // counter for number of digits in the square
+    int digits = 0;
+    int temp = square;
+    while (temp != 0) {
+        digits++;
+        temp /= 10;
+    }
+    // find the middle digit(s)
+    int mid_digit = (digits / 2) + (digits % 2) - 1;
+    // calculate divisor for extracting middle digit(s)
+    int div = pow(10, mid_digit);
+    // extract middle digit(s) and mod by table size
+    int mid_num = (square / div) % table_size;
+    return mid_num;
+}
+
+// Hash function using Folding Method
+int folding_hash(int key, int table_size) {
+    int sum = 0;
+    int temp = key;
+    while (temp > 0) {
+        // extract two digits at a time
+        int digit = temp % 100;
+        sum += digit;
+        temp /= 100;
+    }
+    // mod by table size to get hash value
+    return sum % table_size;
+}
